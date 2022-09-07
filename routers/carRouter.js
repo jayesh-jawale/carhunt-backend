@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import {createCar, getCars, getCarById} from "../models/carModel.js"
+import {createCar, getCars, getMarutiCars, searchCars, getCarById} from "../models/carModel.js"
 
 router.all('/', (req, res, next) => {
     // res.send("Message from ticket Router");
@@ -42,6 +42,44 @@ router.get('/get-cars', async (req, res) => {
         status: "error",
         message: "Cannot get cars",
       });
+})
+
+// Get maruti suzuki cars
+router.get('/get-cars/maruti', async (req, res) => {
+  const companyName = req.query;
+
+  const result = await getMarutiCars(companyName)
+
+  if (result) {
+      return res.json({
+        status: "success",
+        result,
+      });
+    }
+
+    res.json({
+      status: "error",
+      message: "Cannot get cars",
+    });
+})
+
+// Search cars
+router.get('/get-cars/car', async (req, res) => {
+  const searchCar = req.query;
+
+  const result = await searchCars(searchCar)
+
+  if (result) {
+      return res.json({
+        status: "success",
+        result,
+      });
+    }
+
+    res.json({
+      status: "error",
+      message: "Cannot get cars",
+    });
 })
 
 // Get car by Id
