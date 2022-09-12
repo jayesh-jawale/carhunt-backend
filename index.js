@@ -6,6 +6,7 @@ import cors from "cors";
 import mongoose from 'mongoose';
 
 import {carRouter} from './routers/carRouter.js'
+import {userRouter} from './routers/userRouter.js'
 
 dotenv.config(); // getting all env keys
 
@@ -26,8 +27,11 @@ app.get('/', (req, res) => {
     res.send("Hi there! My name is Jayesh");
   });
 
-// User Routers
+// Car Router
 app.use('/', carRouter);
+
+// User Router
+app.use('/', userRouter);
   
 const port = process.env.PORT
 app.listen(port, () => console.log('Started'))
