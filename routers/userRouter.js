@@ -45,7 +45,7 @@ router.post("/login", async (req, res) => {
   const comparePass = await bcrypt.compare(password, storedPassword);
   if (comparePass) {
     const token = jwt.sign({id : userFromDb._id}, process.env.SECRET_KEY)
-    res.json({ status: "success", message: "Successfull login", name: userFromDb.name, token: token });
+    res.json({ status: "success", message: "Successfull login", name: userFromDb.name, email: userFromDb.email, password: userFromDb.password,  token: token });
   } else {
     res.status(401).send({ message: "Invalid Credentials" });
     return;
