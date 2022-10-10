@@ -37,6 +37,20 @@ const getUserProfile = () => {
   });
 };
 
+const updateUserProfile = (_id, userBodyData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      userChaSchema.findOneAndUpdate({_id}, {
+          $set: {data: userBodyData}
+      }
+  ).then((data) => resolve(data))
+  }
+      catch (error) {
+          reject(error)
+      }
+  })
+};
+
 const createToken = async (_id) => {
   const accessJWT = jwt.sign({ _id }, process.env.SECRET_KEY, {
     expiresIn: "1d",
@@ -62,4 +76,4 @@ const storeTokenInDB = (_id, token) => {
   });
 };
 
-export { insertUser, getUserByEmail, getUsers, getUserProfile, createToken };
+export { insertUser, getUserByEmail, getUsers, getUserProfile, updateUserProfile, createToken };

@@ -11,6 +11,7 @@ import {
   getUsers,
   getUserProfile,
   createToken,
+  updateUserProfile,
 } from "../models/userModel.js";
 
 const router = express.Router();
@@ -85,6 +86,7 @@ router.get("/get-users", async (req, res) => {
   }
 });
 
+// Get single user
 router.get("/v1/user", authMiddleware, async (req, res) => {
   // const data = await getUserProfile();
   // res.json({ userData: data });
@@ -100,6 +102,31 @@ router.get("/v1/user", authMiddleware, async (req, res) => {
   } else {
     res.status(404);
     throw new Error("User not found");
+  }
+});
+
+// Update User
+router.put("/v1/user", authMiddleware, async (req, res) => {
+  const user = await userChaSchema.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+      user.password = bcrypt.hashSync(user.password, 10);
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      message: "Profile Updated"
+    });
+  } else {
+    res.json({message: "User not found"});
   }
 });
 

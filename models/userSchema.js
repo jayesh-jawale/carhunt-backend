@@ -31,5 +31,14 @@ const userSchema = new Schema({
   },
 });
 
+// This will encrypt password everytime its saved.
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     next();
+//   }
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+// });
+
 const userChaSchema = mongoose.model("User", userSchema);
 export default userChaSchema;
